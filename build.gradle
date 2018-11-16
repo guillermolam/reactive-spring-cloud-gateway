@@ -34,7 +34,7 @@ ext {
 
 dependencies {
 	//OAuth2
-	Implementation('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure')
+	compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:${springBootVersion}")
 	implementation('org.springframework.boot:spring-boot-starter-security')
 	//Webflux
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
