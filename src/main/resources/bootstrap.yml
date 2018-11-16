@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: customer-portal-bff
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}
+      port: 8500
+      config:
+        enabled: true
+        data-key: data
+        format: YAML
+      discovery:
+        acl-token: a02b05af-a58e-3b6e-2695-08b371b099f3
+        scheme: https
+        hostname: ${CONSUL_HOST}
+        port: ${server.port}
+        instance-id: ${spring.application.name}:${random.value}
+        health-check-interval: 20s
+        health-check-tls-skip-verify: true
+        health-check-path: /customer-portal-bff/actuator/health
+        fail-fast: true
+        tags: secure=true,contextPath=/identity,metrics_path=/identity/actuator/prometheus 
+        query-passing: true
+        
+  banner:
+    location: classpath:banner.txt
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+      WRAP_ROOT_VALUE: false
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 50ms
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
