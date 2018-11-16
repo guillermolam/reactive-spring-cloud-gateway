@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.1.BUILD-SNAPSHOT'
+		springBootVersion = '2.1.0.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -33,9 +33,14 @@ ext {
 }
 
 dependencies {
+	//OAuth2
+	Implementation('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure')
 	implementation('org.springframework.boot:spring-boot-starter-security')
+	//Webflux
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
+	//Consul
 	implementation('org.springframework.cloud:spring-cloud-starter-consul-config')
+	//Zuul - Reverse Proxy
 	implementation('org.springframework.cloud:spring-cloud-starter-netflix-zuul')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('io.projectreactor:reactor-test')
