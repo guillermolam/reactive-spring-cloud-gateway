@@ -1,0 +1,8 @@
+applications:
+- name: gateway
+  memory: 1G
+  instances: 1
+  services:
+  - service-discovery
+  path: build/libs/gateway-1.0.0.jar
+
