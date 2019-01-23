@@ -10,7 +10,7 @@ pipeline {
                 		sh 'chmod +x gradlew'
                 		sh './gradlew clean'
 						// skipping test temporarily. Unit and integration tests are run separately.
-                		sh './gradlew build -x test -x asciidoctor  -DNEXUS_USERNAME=$DOCKER_NEXUS_CREDS_USR -DNEXUS_PASSWORD=$DOCKER_NEXUS_CREDS_PSW'
+                		sh './gradlew build -x test -DNEXUS_USERNAME=$DOCKER_NEXUS_CREDS_USR -DNEXUS_PASSWORD=$DOCKER_NEXUS_CREDS_PSW'
 		                sh './gradlew test '
 		            }
 		        }
@@ -59,17 +59,6 @@ pipeline {
 				)
 			}
 		}
-		
-		stage('DOCUMENTATION'){
-		  environment {
-                BITBUCKET_COMMON_CREDS = credentials('bitbucket')
-             }
-		      steps{
-                    sh './gradlew asciidoctor -x test '
-                     sh './gradlew gitPublishPush -Dorg.ajoberstar.grgit.auth.username=$BITBUCKET_COMMON_CREDS_USR -Dorg.ajoberstar.grgit.auth.password=$BITBUCKET_COMMON_CREDS_PSW'
-		            }
-					
-		  }
     }
 }
 
