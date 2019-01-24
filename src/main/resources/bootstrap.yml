@@ -14,7 +14,7 @@ spring:
     user:
       password: password
   application:
-    name: gateway
+    name: customer-portal-bff
   cloud:
     gateway:
       discovery:
