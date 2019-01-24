@@ -101,7 +101,7 @@ dependencyManagement {
 
 // Runnable Jar
 bootJar {
-	baseName = 'gateway'
+	baseName = 'customer-portal-bff'
 	version =  '1.0.0'
 }
 
