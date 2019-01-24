@@ -3,12 +3,15 @@ package com.mapfre.apis.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@SpringBootApplication
+import io.pivotal.spring.cloud.service.eureka.EurekaInstanceAutoConfiguration;
+
+@SpringBootApplication(exclude = { EurekaInstanceAutoConfiguration.class,EurekaClientAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableWebFluxSecurity
 public class GatewayApplication {
