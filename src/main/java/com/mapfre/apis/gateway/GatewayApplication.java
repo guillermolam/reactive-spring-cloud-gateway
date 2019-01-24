@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-import io.pivotal.spring.cloud.service.eureka.EurekaInstanceAutoConfiguration;
-
-@SpringBootApplication(exclude = { EurekaInstanceAutoConfiguration.class,EurekaClientAutoConfiguration.class})
+@SpringBootApplication(exclude = {EurekaClientAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableWebFluxSecurity
 public class GatewayApplication {
