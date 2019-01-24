@@ -1,4 +1,15 @@
 spring:
+  profiles: test
+  cloud:
+    config:
+      uri:
+      - http://mdv-docdevl01:8888
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://mdv-docdevl01:8761
+---
+spring:
   security:
     user:
       password: password
