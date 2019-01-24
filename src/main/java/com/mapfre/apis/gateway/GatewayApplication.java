@@ -19,7 +19,7 @@ public class GatewayApplication {
 
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
-		return http.httpBasic().and().csrf().disable().authorizeExchange().anyExchange().permitAll().and().build();
+		return http.httpBasic().and().csrf().disable().authorizeExchange().anyExchange().permitAll().and().cors().disable().build();
 	}
 
 }
