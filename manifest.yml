@@ -4,7 +4,7 @@ applications:
   instances: 1
   services:
   - service-discovery
-  - auth-server
+  - auth-service
   - config-server
   path: build/libs/gateway-1.0.0.jar
 
