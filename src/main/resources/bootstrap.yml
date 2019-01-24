@@ -17,6 +17,9 @@ spring:
     name: customer-portal-bff
   cloud:
     gateway:
+      routes:
+      - id: baeldung
+        uri: baeldung.com
       discovery:
         locator:
           enabled: true

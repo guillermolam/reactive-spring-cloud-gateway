@@ -4,7 +4,6 @@ applications:
   instances: 1
   services:
   - service-discovery
-  - auth-service
   - config-server
   path: build/libs/customer-portal-bff-1.0.0.jar
 
