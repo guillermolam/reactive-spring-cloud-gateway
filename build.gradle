@@ -65,6 +65,8 @@ dependencies {
 			'org.springframework.cloud:spring-cloud-starter-sleuth',
 			'org.springframework.cloud:spring-cloud-sleuth-zipkin',
 			'org.springframework.cloud:spring-cloud-sleuth-core',
+			//Service Discovery/Registry
+			'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client',
 			//credhub
 			'org.springframework.credhub:spring-credhub-starter:2.0.0.RELEASE',
 			//Security
