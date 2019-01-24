@@ -7,7 +7,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://mdv-docdevl01:8761
+      defaultZone: http://mdv-docdevl01:8761/eureka
 ---
 spring:
   security:

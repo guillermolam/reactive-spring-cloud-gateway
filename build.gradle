@@ -70,8 +70,8 @@ dependencies {
 			//Security
 			'org.springframework.security.oauth:spring-security-oauth2:2.3.4.RELEASE',
 			// PCF Specific Dependencies
-			'io.pivotal.spring.cloud:spring-cloud-services-starter-config-client')
-			//'io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry')
+			'io.pivotal.spring.cloud:spring-cloud-services-starter-config-client',
+			'io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry')
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test',
 			'org.springframework.security:spring-security-test',
