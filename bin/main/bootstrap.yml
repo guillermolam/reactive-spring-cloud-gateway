@@ -1,25 +1,13 @@
 spring:
-  profiles: test
-  cloud:
-    config:
-      uri:
-      - http://mdv-docdevl01:8888
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://mdv-docdevl01:8761/eureka
----
-spring:
   security:
     user:
       password: password
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: customer-portal-bff
   cloud:
     gateway:
-      routes:
-      - id: baeldung
-        uri: baeldung.com
       discovery:
         locator:
           enabled: true
