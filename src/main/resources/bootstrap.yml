@@ -1,7 +1,16 @@
 spring:
-  security:
-    user:
-      password: password
+  profiles: test
+  cloud:
+    config:
+      uri:
+      - http://mdv-docdevl01:8888
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://mdv-docdevl01:8761/eureka
+---
+
+spring:
   main:
     allow-bean-definition-overriding: true
   application:
@@ -35,8 +44,8 @@ management:
       sla:
         http.server.requests: 50ms
   endpoint:
-    service-registry:
-      enabled: true
+#    service-registry:
+#      enabled: true
     metrics:
       enabled: true
     prometheus:
