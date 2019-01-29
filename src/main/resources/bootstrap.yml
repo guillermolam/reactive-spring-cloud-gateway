@@ -1,59 +1,36 @@
-spring:
-  profiles: test
-  cloud:
-    config:
-      uri:
-      - http://mdv-docdevl01:8888
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://mdv-docdevl01:8761/eureka
----
+server:
+  port: 8080
 
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  application:
-    name: customer-portal-bff
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-  sleuth:
-    http:
-      enabled: true
-    sampler:
-      probability: 1.0
-    enabled: true
-  zipkin:
-    service:
-      name: gateway
-    sender:
-      type: web
-    base-url: http://mdv-docdevl03:9411
-management:
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
-      sla:
-        http.server.requests: 50ms
-  endpoint:
-#    service-registry:
-#      enabled: true
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 logging:
   level:
-    org.springframework.cloud.sleuth: DEBUG
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.cloud.gateway: TRACE
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  autoconfigure:
+    # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
+    exclude: org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: uaa
+            client-id: 2330db4f-eca0-4abb-8aad-3185093dda3b
+            client-secret: b7cabda8-b135-4e5e-9829-011bd2340e2d
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email,resource.read
+        provider:
+          uaa:
+            authorization-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/authorize
+            token-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/token
+            user-info-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/uaa/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/token_keys
