@@ -8,8 +8,6 @@ logging:
     org.springframework.security: INFO
     org.springframework.security.oauth2: INFO
     org.springframework.cloud.gateway: TRACE
-#    org.springframework.boot.autoconfigure: DEBUG
-
 spring:
   autoconfigure:
     # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
@@ -23,14 +21,13 @@ spring:
           login-client:
             provider: uaa
             client-id: 2330db4f-eca0-4abb-8aad-3185093dda3b
-            client-secret: b7cabda8-b135-4e5e-9829-011bd2340e2d
+            client-secret: d2060ff5-b801-4355-b472-ec7bcb875f3d
             authorization-grant-type: authorization_code
             redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: openid,profile,email,resource.read
         provider:
           uaa:
             authorization-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/authorize
             token-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/token
-            user-info-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/uaa/userinfo
+            user-info-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/userinfo
             user-name-attribute: sub
             jwk-set-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/token_keys

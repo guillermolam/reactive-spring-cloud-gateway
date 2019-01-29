@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @SpringBootApplication
+//@EnableDiscoveryClient
 public class GatewayApplication {
 
 	@Autowired
@@ -24,19 +25,40 @@ public class GatewayApplication {
 
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		//@formatter:off
 		return builder.routes()
-				.route("resource", r -> r.path("/resource")
-						.filters(f -> f.filter(filterFactory.apply()))
-						.uri("http://localhost:9000"))
+				.route("resource",
+						r -> r.path("/resource").filters(f -> f.filter(filterFactory.apply()))
+								.uri("https://resource-server.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				// Identity-API
+				.route("identity", r -> r.path("/identity-api/**").filters(
+						f -> f.rewritePath("/identity-api/(?<segment>.*)", "/${segment}").filter(filterFactory.apply()))
+						.uri("https://identity-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				// B2C-Account-API
+				.route("b2c-account",
+						r -> r.path("/b2c-account-api/**")
+								.filters(f -> f.rewritePath("/b2c-account-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply()))
+								.uri("https://b2c-account-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				// Personal-Policy-API
+				.route("personal-policy",
+						r -> r.path("/personal-policy-api/**")
+								.filters(f -> f.rewritePath("/personal-policy-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply()))
+								.uri("https://personal-policy-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				// Claims-API
+				.route("claims", r -> r.path("/claims-api/**").filters(
+						f -> f.rewritePath("/claims-api/(?<segment>.*)", "/${segment}").filter(filterFactory.apply()))
+						.uri("https://claims-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				// Billing-API
+				.route("billing", r -> r.path("/billing-api/**").filters(
+						f -> f.rewritePath("/billing-api/(?<segment>.*)", "/${segment}").filter(filterFactory.apply()))
+						.uri("https://billing-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
 				.build();
-		//@formatter:on
 	}
 
 	@GetMapping("/")
-	public String index(Model model,
-						@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
-						@AuthenticationPrincipal OAuth2User oauth2User) {
+	public String index(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+			@AuthenticationPrincipal OAuth2User oauth2User) {
 		model.addAttribute("userName", oauth2User.getName());
 		model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
 		model.addAttribute("userAttributes", oauth2User.getAttributes());
