@@ -1,10 +1,12 @@
 applications:
 - name: customer-portal-bff
+  env:
+    GRANT_TYPE: client_credentials
   memory: 1G
   instances: 1
   services:
   - service-discovery
   - config-server
-  - auth-service
+#  - auth-service
   path: build/libs/customer-portal-bff-1.0.0.jar
 

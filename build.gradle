@@ -47,7 +47,13 @@ dependencies {
 			'org.springframework.cloud:spring-cloud-starter-sleuth',
 			'org.springframework.cloud:spring-cloud-sleuth-zipkin',
 			'org.springframework.cloud:spring-cloud-sleuth-core',
-			'io.pivotal.spring.cloud:spring-cloud-sso-connector:2.1.3.RELEASE'
+			'io.pivotal.spring.cloud:spring-cloud-sso-connector:2.1.3.RELEASE',
+			
+			//'org.springframework.security:spring-security-oauth2-resource-server',
+			//'org.springframework.security:spring-security-oauth2-jose',
+			//'org.springframework.cloud:spring-cloud-starter-oauth2'
+    		//'org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.0.RELEASE',
+    		//'io.pivotal.spring.cloud:spring-cloud-sso-connector:1.1.0.RELEASE'
 			)
 			// PCF Specific Dependencies
 			//'io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry')
