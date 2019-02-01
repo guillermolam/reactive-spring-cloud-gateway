@@ -8,6 +8,9 @@ logging:
     org.springframework.security: INFO
     org.springframework.security.oauth2: INFO
     org.springframework.cloud.gateway: TRACE
+
+client-id: d7423b4a-6413-46f7-aa14-15052e3d10be
+client-secret: a9031c20-3b55-4ebd-8720-081cfff47567
 spring:
   autoconfigure:
     # TODO: remove when fixed https://github.com/spring-projects/spring-security/issues/6314
@@ -19,15 +22,13 @@ spring:
       client:
         registration:
           login-client:
-            provider: uaa
-            client-id: 2330db4f-eca0-4abb-8aad-3185093dda3b
-            client-secret: d2060ff5-b801-4355-b472-ec7bcb875f3d
-            authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-id: d7423b4a-6413-46f7-aa14-15052e3d10be
+            client-secret: 2c35346d-39f0-4cb5-a8b8-bd1cccc8c6b1
+            authorization-grant-type: client_credentials
         provider:
-          uaa:
-            authorization-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/authorize
+          login-client:    
             token-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/token
-            user-info-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/userinfo
-            user-name-attribute: sub
-            jwk-set-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/token_keys
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/token_keys 
+       

@@ -28,3 +28,7 @@ spring:
         provider:
           login-client:    
             token-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/oauth/token
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com/token_keys 
+       
