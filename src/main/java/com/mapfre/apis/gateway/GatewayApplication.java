@@ -17,11 +17,28 @@ public class GatewayApplication {
 	@Autowired
 	private TokenRelayGatewayFilterFactory filterFactory;
 
-	@Value("${client-id}")
+	@Value("${spring.security.oauth2.client.registration.login-client.client-id}")
 	private String clientId;
 
-	@Value("${client-secret}")
+	@Value("${spring.security.oauth2.client.registration.login-client.client-secret}")
 	private String clientsecret;
+
+	@Value("${identity-api-url}")
+	private String identityApiUrl;
+	@Value("${policy-api-url}")
+	private String policyApiUrl;
+	@Value("${claims-api-url}")
+	private String cliamsApiUrl;
+	@Value("${billing-api-url}")
+	private String billingApiUrl;
+	@Value("${b2c-accounts-api-url}")
+	private String b2cAccountsApiUrl;
+	@Value("${address-normalizer-url}")
+	private String addressNormalizerUrl;
+	@Value("${sso-tile-url}")
+	private String ssoTileUrl;
+	@Value("${host-allowed}")
+	private String host_allowed;
 
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
@@ -29,48 +46,52 @@ public class GatewayApplication {
 				// Identity-API
 				.route("identity", r -> r.path("/identity-api/**")
 						.filters(f -> f.rewritePath("/identity-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://identity-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+								.filter(filterFactory.apply())
+								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+						.uri(identityApiUrl))
 				// B2C-Account-API
-				.route("b2c-account", r -> r.path("/b2c-account-api/**")
-						.filters(f -> f.rewritePath("/b2c-account-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://b2c-account-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				.route("b2c-account",
+						r -> r.path("/b2c-account-api/**")
+								.filters(f -> f.rewritePath("/b2c-account-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply())
+										.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+								.uri(b2cAccountsApiUrl))
 				// Personal-Policy-API
-				.route("personal-policy", r -> r.path("/personal-policy-api/**")
-						.filters(f -> f.rewritePath("/personal-policy-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://personal-policy-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				.route("personal-policy",
+						r -> r.path("/personal-policy-api/**")
+								.filters(f -> f.rewritePath("/personal-policy-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply())
+										.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+								.uri(policyApiUrl))
 				// Claims-API
-				.route("claims", r -> r.path("/claims-api/**")
-						.filters(f -> f.rewritePath("/claims-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://claims-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				.route("claims",
+						r -> r.path("/claims-api/**")
+								.filters(f -> f.rewritePath("/claims-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply())
+										.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+								.uri(cliamsApiUrl))
 				// Billing-API
-				.route("billing", r -> r.path("/billing-api/**")
-						.filters(f -> f.rewritePath("/billing-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://billing-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+				.route("billing",
+						r -> r.path("/billing-api/**")
+								.filters(f -> f.rewritePath("/billing-api/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply())
+										.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+								.uri(billingApiUrl))
 				// Name-Address-Normalizer-API
 				.route("name-address-normalizer", r -> r.path("/name-address-normalizer-api/**")
 						.filters(f -> f.rewritePath("/name-address-normalizer-api/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-						.uri("https://name-address-normalizer-api.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+								.filter(filterFactory.apply())
+								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+						.uri(addressNormalizerUrl))
 				// Authorization and Token Endpoint
 				.route("auth",
-						r -> r.path("/auth/**").filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).addRequestParameter("client_id", clientId)// .rewriteResponseHeader("Access-Control-Allow-Origin",
-																											// "*","*")
-								.addRequestParameter("client_secret", clientsecret)
-								.setResponseHeader("Access-Control-Allow-Origin",
-										"https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
-								.uri("https://external-dev.login.sys.nonprod.us-east-1.aws.pcf.mapfreusa.com"))
+						r -> r.path("/auth/**")
+								.filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}")
+										.filter(filterFactory.apply()).addRequestParameter("client_id", clientId)// .rewriteResponseHeader("Access-Control-Allow-Origin",
+																													// "*","*")
+										.addRequestParameter("client_secret", clientsecret)
+										.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+								.uri(ssoTileUrl))
 				.build();
 	}
 
