@@ -15,6 +15,7 @@ public class SecurityConfig {
 //		return http.build();
 		http.csrf().disable().cors().disable().authorizeExchange().pathMatchers("/actuator/**").permitAll()
 		.and().authorizeExchange().pathMatchers("/auth/**").permitAll()
+		.and().authorizeExchange().pathMatchers("/auth-client/**").permitAll()
 		.and().authorizeExchange().pathMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 		.and().authorizeExchange().pathMatchers("/**").hasAuthority("SCOPE_openid").anyExchange().authenticated().and().oauth2ResourceServer().jwt();
 		return http.build();
