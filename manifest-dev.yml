@@ -3,11 +3,10 @@ applications:
   env:
     GRANT_TYPE: client_credentials
   memory: 1G
-  instances: 2
+  instances: 1
   services:
   - service-discovery
   - config-server
-  - credhub
-  - mapfre-usa-auth-server
+#  - auth-service
   path: build/libs/customer-portal-bff-1.0.0.jar
 

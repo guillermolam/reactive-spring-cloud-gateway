@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -25,13 +26,15 @@ public class CORSFilter {
 	private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS";
 	private static final String MAX_AGE = "1728000";
 
+	@Value("${allowedOrigins}")
+	private String[]  allowedOrigins;
+			
 	@Bean
 	public WebFilter corsFilter() {
 		return (ServerWebExchange ctx, WebFilterChain chain) -> {
 			ServerHttpRequest request = ctx.getRequest();
 			Stream<String> origins = Arrays
-					.asList("https://customer-portal-ui.apps.nonprod.us-east-1.aws.pcf.mapfreusa.com",
-							"https://localhost:4200")
+					.asList(allowedOrigins)
 					.stream();
 			if (CorsUtils.isCorsRequest(request)) {
 				ServerHttpResponse response = ctx.getResponse();
