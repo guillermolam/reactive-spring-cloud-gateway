@@ -18,7 +18,7 @@ logging:
     org.springframework.security.oauth2: INFO
     org.springframework.cloud.gateway: TRACE
 
-spring:
+spring:  
   application:
     name: customer-portal-bff
   main:
