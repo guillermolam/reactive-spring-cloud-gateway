@@ -7,6 +7,6 @@ applications:
   services:
   - service-discovery
   - config-server
-#  - auth-service
+  - auth-service
   path: build/libs/customer-portal-bff-1.0.0.jar
 

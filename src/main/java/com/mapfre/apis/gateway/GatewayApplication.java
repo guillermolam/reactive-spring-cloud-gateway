@@ -29,6 +29,8 @@ public class GatewayApplication {
 	private String policyApiUrl;
 	@Value("${claims-api-url}")
 	private String claimsApiUrl;
+	@Value("${claims-livo-url}")
+	private String claimsLivoUrl;
 	@Value("${billing-api-url}")
 	private String billingApiUrl;
 	@Value("${b2c-accounts-api-url}")
@@ -72,6 +74,12 @@ public class GatewayApplication {
 								.filter(filterFactory.apply())
 								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
 						.uri(claimsApiUrl))
+				// Claims-Livo
+				.route("claims-livo", r -> r.path("/claims-livo/**")
+						.filters(f -> f.rewritePath("/claims-livo/(?<segment>.*)", "/${segment}")
+								.filter(filterFactory.apply())
+								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+						.uri(claimsLivoUrl))
 				// Billing-API
 				.route("billing", r -> r.path("/billing-api/**")
 						.filters(f -> f.rewritePath("/billing-api/(?<segment>.*)", "/${segment}")

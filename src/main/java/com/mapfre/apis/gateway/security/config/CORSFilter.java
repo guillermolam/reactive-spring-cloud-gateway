@@ -38,11 +38,9 @@ public class CORSFilter {
 				ServerHttpResponse response = ctx.getResponse();
 				HttpHeaders headers = response.getHeaders();
 
-				Optional<String> allowedOrigin = origins.filter(
-						element -> request.getHeaders().get("Origin").stream().anyMatch(el -> el.contains(element)))
-						.findFirst();
+				Optional<String> allowedOrigin = getOrigin(request, origins);
 
-				headers.add("Access-Control-Allow-Origin",allowedOrigin.get());
+				headers.add("Access-Control-Allow-Origin", allowedOrigin.get());
 				headers.add("Access-Control-Allow-Methods", ALLOWED_METHODS);
 				headers.add("Access-Control-Max-Age", MAX_AGE);
 				headers.add("Access-Control-Allow-Headers", ALLOWED_HEADERS);
@@ -54,5 +52,12 @@ public class CORSFilter {
 			}
 			return chain.filter(ctx);
 		};
+	}
+
+	public static Optional<String> getOrigin(ServerHttpRequest request, Stream<String> origins) {
+		Optional<String> allowedOrigin = origins
+				.filter(element -> request.getHeaders().get("Origin").stream().anyMatch(el -> el.contains(element)))
+				.findFirst();
+		return allowedOrigin;
 	}
 }
