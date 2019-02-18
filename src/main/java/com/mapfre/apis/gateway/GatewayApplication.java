@@ -17,6 +17,9 @@ public class GatewayApplication {
 	@Autowired
 	private TokenRelayGatewayFilterFactory filterFactory;
 
+	@Autowired
+	private URLPasswordDecodingFilterFactory urlPasswordDecodingFilter;
+
 	@Value("${spring.security.oauth2.client.registration.login-client.client-id}")
 	private String clientId;
 
@@ -46,6 +49,11 @@ public class GatewayApplication {
 	private String client_credentials_id;
 	@Value("${client_credentials_secret}")
 	private String client_credentials_secret;
+
+	@Bean
+	public URLPasswordDecodingFilterFactory customFilterFactory() {
+		return new URLPasswordDecodingFilterFactory();
+	}
 
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
@@ -94,17 +102,16 @@ public class GatewayApplication {
 						.uri(addressNormalizerUrl))
 				// Authorization and Token Endpoint
 				.route("auth", r -> r.path("/auth/**")
-						.filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}").filter(filterFactory.apply())
-								.addRequestParameter("client_id", clientId)// .rewriteResponseHeader("Access-Control-Allow-Origin",
-																			// "*","*")
+						.filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}")
+								.filter(urlPasswordDecodingFilter.apply()).filter(filterFactory.apply())
+								.addRequestParameter("client_id", clientId)
 								.addRequestParameter("client_secret", clientsecret)
 								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
 						.uri(ssoTileUrl))
 				// Authorization and Token Endpoint
 				.route("auth-client", r -> r.path("/auth-client/**")
 						.filters(f -> f.rewritePath("/auth-client/(?<segment>.*)", "/${segment}")
-								.filter(filterFactory.apply()).addRequestParameter("client_id", client_credentials_id)// .rewriteResponseHeader("Access-Control-Allow-Origin",
-								// "*","*")
+								.filter(filterFactory.apply()).addRequestParameter("client_id", client_credentials_id)
 								.addRequestParameter("client_secret", client_credentials_secret)
 								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
 						.uri(ssoTileUrl))
