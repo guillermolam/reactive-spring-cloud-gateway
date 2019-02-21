@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.security.oauth2.gateway.TokenRelayGatewayFilterFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -100,10 +101,17 @@ public class GatewayApplication {
 								.filter(filterFactory.apply())
 								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
 						.uri(addressNormalizerUrl))
-				// Authorization and Token Endpoint
 				.route("auth", r -> r.path("/auth/**")
 						.filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}")
 								.filter(urlPasswordDecodingFilter.apply()).filter(filterFactory.apply())
+								.addRequestParameter("client_id", clientId)
+								.addRequestParameter("client_secret", clientsecret)
+								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
+						.uri(ssoTileUrl))
+				// Authorization and Token Endpoint
+				.route("auth", r -> r.path("/auth/**").and().method(HttpMethod.POST)
+						.filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/${segment}")
+								.filter(filterFactory.apply())
 								.addRequestParameter("client_id", clientId)
 								.addRequestParameter("client_secret", clientsecret)
 								.setResponseHeader("Access-Control-Allow-Origin", host_allowed))
